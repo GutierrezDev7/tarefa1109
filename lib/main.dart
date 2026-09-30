@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
-import 'screens/login.dart';
+
+import 'core/controladores.dart';
+import 'core/escopo.dart';
+import 'core/navegacao.dart';
+import 'core/rotas.dart';
+import 'core/tema.dart';
 
 void main() {
-  runApp(const MeuApp());
+  runApp(MeuApp(controladores: Controladores()));
 }
 
 class MeuApp extends StatelessWidget {
-  const MeuApp({super.key});
+  const MeuApp({super.key, required this.controladores});
+
+  final Controladores controladores;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Loja Virtual',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
-        useMaterial3: true,
+    return AppEscopo(
+      controladores: controladores,
+      child: MaterialApp(
+        title: 'Aurora',
+        debugShowCheckedModeBanner: false,
+        theme: Tema.claro(),
+        initialRoute: Navegacao.login,
+        onGenerateRoute: (settings) => Rotas.gerar(settings, controladores),
       ),
-      home: const TelaLogin(),
     );
   }
 }
